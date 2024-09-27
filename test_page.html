@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test XSS Page</title>
+    <script>
+        function greetUser() {
+            const name = document.getElementById("name").value;
+            alert("Hello, " + name + "!");
+        }
+    </script>
+</head>
+<body>
+    <h1>XSS Vulnerability Test Page</h1>
+    <form onsubmit="greetUser(); return false;">
+        <label for="name">Enter your name:</label>
+        <input type="text" id="name" placeholder="Type something..." required>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>Search</h2>
+    <input type="text" id="search" placeholder="Search...">
+    <p id="result"></p>
+
+    <script>
+        // Reflective XSS example
+        const query = new URLSearchParams(window.location.search).get('q');
+        if (query) {
+            document.getElementById('result').innerHTML = "You searched for: " + query;
+        }
+    </script>
+
+    <p>To test XSS, try the following:</p>
+    <ul>
+        <li>Enter <strong><script>alert('XSS')</script></strong> in the name field and submit.</li>
+        <li>Visit the URL <strong>test_page.html?q=<script>alert('XSS')</script></strong> to see the reflective XSS.</li>
+    </ul>
+</body>
+</html>
